@@ -64,9 +64,27 @@ if (!require("pacman")) {
   library(devtools)
   install_github("trinker/pacman")
 }
+if (!require("zoo")) {
+  install.packages("zoo")
+}
+library(zoo)
+
+if (!require("dplyr")) {
+  install.packages("dplyr")
+}
+library(dplyr)
+
+if (!require("quanteda")) {
+  install.packages("quanteda")
+}
+library(quanteda)
+
+if (!require("e1071")) {
+  install.packages("e1071")
+}
+library(e1071)
 
 pacman::p_load(knitr, readr, stringr, tesseract, vecsets)
-source('../lib/ifCleanToken.R')
 file_name_vec <- list.files("../data/ground_truth") #100 files in total
 ```
 
@@ -74,7 +92,7 @@ file_name_vec <- list.files("../data/ground_truth") #100 files in total
 
 Although we have processed the Tesseract OCR and save the output txt files in the `data` folder, we include this chunk of code in order to make clear the whole pipeline to you.
 
-```{r, eval=FALSE}
+```{r, Feature and Label Construction}
 for(i in c(1:length(file_name_vec))){
   current_file_name <- sub(".txt","",file_name_vec[i])
   ## png folder is not provided on github (the code is only on demonstration purpose)
@@ -110,20 +128,58 @@ The referenced papers are:
 
 In this statercode, we implement the first three rules in the first paper -- rule based techniques, as an example.
 
+* Feature and Label Construction
+
 ```{r}
-### only process one of the files in the folder as an example, in your project, you need to use all the files
-current_file_name <- sub(".txt","",file_name_vec[5])
+source("../lib/extractFeature.R")
+source("../lib/extractLabel.R")
 
-## read the ground truth text
-current_ground_truth_txt <- readLines(paste("../data/ground_truth/",current_file_name,".txt",sep=""), warn=FALSE)
+# read 100 files
+cat("------------Start Feature and Label Construction------------\n")
+for (i in 1:length(file_name_vec)){
+  ## set current file name
+  current_file_name <- sub(".txt","",file_name_vec[i])
+  ## read the ground truth text
+  current_ground_truth_txt <-
+    readLines(paste("../data/ground_truth/",current_file_name,".txt",sep=""),warn=FALSE)
+  ## read the tesseract text
+  current_tesseract_txt <- 
+    readLines(paste("../data/tesseract/",current_file_name,".txt",sep=""),warn=FALSE)
+  #tokenize tesseract output
+  clean_tesseract_txt <- paste(current_tesseract_txt, collapse = " ")
+  tesseract_vec <- str_split(clean_tesseract_txt," ")[[1]]
+  # generate features for every token in the current file
+  current_feat <- as.data.frame(t(sapply(tesseract_vec, extractFeature)))
+  # generate labels for every token in the current file
+  current_label <- unlist(sapply(1:length(current_tesseract_txt), extractLabel,
+                         current_tesseract_txt,current_ground_truth_txt))
+  # generate data frame consists of (word, filenum, index of word, label)
+  current_dat <- data.frame(word = tesseract_vec,
+                  filenum = i,
+                  index = index(tesseract_vec),
+                  label = current_label)
+  # merge the feature and label data frame with previous ones
+  if (i == 1) {
+    label_dat <- current_dat
+    feature_dat <- current_feat
+  } else {
+    label_dat <- merge(label_dat, current_dat, all = T)
+    feature_dat <- rbind(feature_dat, current_feat)
+  }
+  # print message
+  if (i %% 10 == 0) {cat(i, "files finished\n")}
+}
+cat("------------Feature and Label Construction Done------------\n")
 
-## read the tesseract text
-current_tesseract_txt <- readLines(paste("../data/tesseract/",current_file_name,".txt",sep=""), warn=FALSE)
-clean_tesseract_txt <- paste(current_tesseract_txt, collapse = " ")
 
-## detect tesseract word error
-tesseract_vec <- str_split(clean_tesseract_txt," ")[[1]] #1124 tokens
-tesseract_if_clean <- unlist(lapply(tesseract_vec,ifCleanToken)) # source code of ifCleanToken in in lib folder
+save(feature_dat, file = "../output/feature_dat.RData")
+save(label_dat, file = "../output/label_dat.RData")
+```
+
+* Cross Validation
+
+```{r}
+
 ```
 
 # Step 4 - Error correction

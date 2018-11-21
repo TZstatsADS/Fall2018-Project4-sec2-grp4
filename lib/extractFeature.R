@@ -1,3 +1,12 @@
+##############################
+## extractFeature
+## Ref: D-3
+## Input: a token
+## Output: a vector of fourteen features
+##############################
+library(stringr)
+library(quanteda)
+library(dplyr)
 extractFeature <- function(token) {
   l <- str_length(token)
   # number of vowels
@@ -28,7 +37,7 @@ extractFeature <- function(token) {
   f9 <- ifelse((2*l_a)<l,1,0)
   # >=6 derectly consecutive consonants {1,0}
   f10 <- ifelse(is.na(str_match(token, '[bcdfghjklmnprstvyz]{6}')),0,1)
-  # remove first and last, non-alphanumerical, {1,0}
+  # remove first and last, >= 2 non-alphanumerical, {1,0}
   f11 <- ifelse(is.na(str_match(substr(token, 2, l-1), '[^a-zA-Z0-9]{2}')),0,1)
   # Bigram
   token_bigr <- char_ngrams(unlist(str_split(str_to_lower(token),"")),2,concatenator = "")
@@ -42,4 +51,19 @@ extractFeature <- function(token) {
   # Levenshtein distance.
   #f15
   return(c(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14))
+}
+
+##############################
+## getBigr
+## Ref: English Letter Frequency Counts: Mayzner Revisited or ETAOIN SRHLDCU 
+##      by Peter Norvig is an analysis of English letter frequencies using the 
+##      Google Corpus Data.
+##      https://gist.github.com/lydell/c439049abac2c9226e53#file-bigrams-json
+## Input: a letter bigram vector extracted a token
+## Output: a measurement defined in paper (f12)
+##############################
+load("../output/Bigram.RData")
+getBigr <- function(token_bigram, c=10000000000) {
+  df <- Bigram %>% filter(bigram %in% token_bigram) 
+  return(sum(df$freq)/(c*length(token_bigram)))
 }
