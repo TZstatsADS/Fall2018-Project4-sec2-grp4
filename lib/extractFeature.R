@@ -7,6 +7,7 @@
 library(stringr)
 library(quanteda)
 library(dplyr)
+library(stringdist)
 extractFeature <- function(token) {
   l <- str_length(token)
   # number of vowels
@@ -49,8 +50,9 @@ extractFeature <- function(token) {
   # Non-alphabetical Symbols
   l1 <- length(unlist(str_match_all(token,'[a-zA-Z]')))
   f14 <- ifelse(l1==0, 999, (l-l1)/l1)
-  # Levenshtein distance.
-  #f15
+  # Levenshtein distance (Plausible correction between current token and dictionary of wards)
+  #f15 <- ifelse(min(stringdist(tesseract_vec,words.eng,method = "lv")) > 2, l, 
+  #             (min(stringdist(tesseract_vec,words.eng,method = "lv")))/l)
   return(c(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14))
 }
 
