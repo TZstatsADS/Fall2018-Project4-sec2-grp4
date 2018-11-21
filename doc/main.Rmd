@@ -1,6 +1,9 @@
 ---
 title: 'Optical character recognition (OCR)'
 output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 2
   html_document:
     toc: true
     toc_depth: 2
@@ -128,7 +131,7 @@ The referenced papers are:
 
 In this statercode, we implement the first three rules in the first paper -- rule based techniques, as an example.
 
-* Feature and Label Construction
+* ###Feature and Label Construction
 
 ```{r}
 source("../lib/extractFeature.R")
@@ -163,7 +166,7 @@ for (i in 1:length(file_name_vec)){
     label_dat <- current_dat
     feature_dat <- current_feat
   } else {
-    label_dat <- merge(label_dat, current_dat, all = T)
+    label_dat <- rbind(label_dat, current_dat)
     feature_dat <- rbind(feature_dat, current_feat)
   }
   # print message
@@ -176,10 +179,11 @@ save(feature_dat, file = "../output/feature_dat.RData")
 save(label_dat, file = "../output/label_dat.RData")
 ```
 
-* Cross Validation
+* ###Cross Validation
 
 ```{r}
-
+load("../output/feature_dat.RData")
+load("../output/label_dat.RData")
 ```
 
 # Step 4 - Error correction
