@@ -184,6 +184,11 @@ save(label_dat, file = "../output/label_dat.RData")
 ```{r}
 load("../output/feature_dat.RData")
 load("../output/label_dat.RData")
+cv_ind <- sample(1:nrow(feature_dat), 10000, replace = FALSE)
+cv_feature_dat <- feature_dat[cv_ind, ]
+cv_label_dat <- label_dat[cv_ind, ]
+cv <- tune(svm, train.x=cv_feature_dat, train.y=cv_label_dat$label, 
+              kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
 ```
 
 # Step 4 - Error correction
