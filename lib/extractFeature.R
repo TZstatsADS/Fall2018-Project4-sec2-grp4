@@ -1,14 +1,24 @@
 ##############################
 ## extractFeature
 ## Ref: D-3
-## Input: a token
-## Output: a vector of fourteen features
+## Input: a token vector of a line in txt
+## Output: a feature matrix for all tokens in this vector
 ##############################
 library(stringr)
 library(quanteda)
 library(dplyr)
-library(stringdist)
-extractFeature <- function(token) {
+#library(stringdist)
+
+extractFeature <- function(token_vec) {
+  featureMatrix <- t(sapply(token_vec, getFeature))
+  return(featureMatrix)
+}
+##############################
+## getFeature
+## Input: a token
+## Output: a vector of 14 features
+##############################
+getFeature <- function(token) {
   l <- str_length(token)
   # number of vowels
   v <- length(unlist(str_match_all(token,'[aeiou]')))
