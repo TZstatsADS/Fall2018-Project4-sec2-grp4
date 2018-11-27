@@ -61,6 +61,15 @@ c <- svm.func(groupsplit$C)
 d <- svm.func(groupsplit$D)
 e <- svm.func(groupsplit$E)
 
+#Saving the outputs
+abcd <- rbind(matrix(a$pred),matrix(b$pred),matrix(c$pred),matrix(d$pred))
+abcd.list <- list(abcd)
 
+# Saving the results
+save(abcd, file = "../output/tempSvmLabels.RData")
+save(abcd.list, file = "../output/listtempSvmLabels.RData")
 
+confs <- cbind(a$conf$overall[1],b$conf$overall[1],c$conf$overall[1],d$conf$overall[1])
+colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4")
 
+save(confs, file = "../output/accuracy.RData")
