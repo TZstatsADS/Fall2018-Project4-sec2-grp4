@@ -1,8 +1,8 @@
 ##############################
 ## Candidate database
 ## Ref: C-3
-## Input: a token
-## Output: a vector of all the possible corrected candidates (typo because of insertation)
+## Input: a word
+## Output: a list of all the possible corrected candidates (typo because of insertation)
 ##############################
 library(stringr)
 library(quanteda)
