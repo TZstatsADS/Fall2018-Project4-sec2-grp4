@@ -28,36 +28,38 @@ svm.func <- function(dat){
   
   # splitting data into training & test
   set.seed(101)
-  sample <- sample.int(n = nrow(dat), size = floor(.75*nrow(dat)), replace = F)
-  train <- dat[sample, ]
-  test  <- dat[-sample, ]
+  #sample <- sample.int(n = nrow(dat), size = floor(.75*nrow(dat)), replace = F)
+  #train <- dat[sample, ]
+  #test  <- dat[-sample, ]
   
   # training the model
-  svm_model <- train(apply(train[,c(1:14)],2,as.numeric),train$label, method = "svmRadial",
+  svm_model <- train(apply(dat[,c(1:14)],2,as.numeric),dat$label, method = "svmRadial",
                      trControl=trctrl,
                      preProcess = c("center", "scale"),
                      tuneGrid = grid_radial)
   
   # the model results
-  test_pred <- predict(svm_model, newdata = apply(test[,c(1:14)],2,as.numeric))
-  test_pred
+  pred <- predict(svm_model, newdata = apply(dat[,c(1:14)],2,as.numeric))
   
   # probabilities
-  predictedProbs <- predict(svm_model, apply(test[,c(1:14)],2,as.numeric), type = "prob")
-  predictedProbs
+  predictedProbs <- predict(svm_model, apply(dat[,c(1:14)],2,as.numeric), type = "prob")
   
   # confusion matrix of the results
-  confusionMatrix(test_pred,test$label)
+  conf <- confusionMatrix(pred, dat$label)
+  
+  return(list(conf = conf, pred = pred))
   
 }
 
 # Splitting the dataset by groups
 groupsplit <- split(dat,dat$group_num)
 
-
-# Applying SVM to each group
-results <- sapply(groupsplit, svm.func)
-results
+# Results
+a <- svm.func(groupsplit$A)
+b <- svm.func(groupsplit$B)
+c <- svm.func(groupsplit$C)
+d <- svm.func(groupsplit$D)
+e <- svm.func(groupsplit$E)
 
 
 
