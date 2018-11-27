@@ -10,22 +10,18 @@ library(dplyr)
 library(stringdist)
 InsertedCandidate <- function(word){
   possibleword <- rep(NA,nchar(word))
+  IC <- list()
   for (i in 1:nchar(word)){
     possibleword[i] <- paste(c(substr(word,start=0,stop=i-1),substr(word,start=i+1,stop=nchar(word))),collapse ="")
   }
   ind <- is.element(possibleword,V)
-  IC <- possibleword[ind]
+  words <- possibleword[ind]
+  if (length(words)>0){
+    for (j in 1:length(words)){
+      IC <- append(IC,words[j])
+    }
+  }
   return(IC)
-  #### for every words####
-  
-  #####typo because of insertion####NO NEED!
-  
-  
-  #####typo because of deletion####
-  
-  
-  
-  ####typo because of substition###
 }
 
 
