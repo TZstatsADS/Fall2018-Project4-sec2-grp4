@@ -18,7 +18,7 @@ Term: Fall 2018
 	
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md))
 	+ Tao Han:
-	+ Zhirong Li:
+	+ Zhirong Li: Worked on performance measure in word level and character level.
 	+ Atishay Sehgal: Worked on Error Detection - Contributed to Feature & Label Extraction, implemented cross-validated 			       SVM. Implemented improvements in computational speed of SVM. Provided ideas for error correction 			  speed improvements.
 	+ Lujia Wang: Worked on Error Detection - Worked on feature construction, training data set generation and SVM training. Assisted Jiaqian handling some computation on Error Correction.
 	+ Jiaqian Yu:
