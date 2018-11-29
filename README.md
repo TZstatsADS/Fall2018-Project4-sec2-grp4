@@ -20,8 +20,8 @@ Term: Fall 2018
 	+ Tao Han:
 	+ Zhirong Li: Worked on performance measure in word level and character level.
 	+ Atishay Sehgal: Worked on Error Detection - Contributed to Feature & Label Extraction, implemented cross-validated 			       SVM. Implemented improvements in computational speed of SVM. Provided ideas for error correction 			  speed improvements.
-	+ Lujia Wang: Worked on Error Detection - Worked on feature construction, training data set generation and SVM training. Assisted Jiaqian handling some computation on Error Correction.
-	+ Jiaqian Yu:
+	+ Lujia Wang: Worked on Error Detection - Worked on feature construction, training data set generation and SVM training. Assisted Jiaqian handling some computation on Error Correction. Helped with the presentation slides and discussed with teammates.
+	+ Jiaqian Yu: Worked on Error Correction based on C3 - Contributed to all the processes: find proposed candidates, gnerate confusion matrix, calcualte the probability and find out the best "correction". Helped with the PPT and discussed with other teammates.
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
