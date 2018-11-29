@@ -19,7 +19,7 @@ Term: Fall 2018
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md))
 	+ Tao Han:
 	+ Zhirong Li:
-	+ Atishay Sehgal:
+	+ Atishay Sehgal: Worked on Error Detection - Contributed to Feature & Label Extraction, implemented cross-validated 			       SVM. Implemented improvements in computational speed of SVM. Provided ideas for error correction 			  speed improvements.
 	+ Lujia Wang:
 	+ Jiaqian Yu:
 
