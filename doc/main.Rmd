@@ -213,12 +213,266 @@ The referenced papers are:
 5. [topic models](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4377099)
 
 We follow the correction algorithm in C-3.
+
+
+* ###Generate proposed correction candidates
+
 ```{r}
-load("../output/detected_tokens.RData") #258977
-# filter the tokens that detected as zero
-detected_tokens <- as.data.frame(detected_tokens)
-error_tokens <- detected_tokens %>% filter(SVM_Label == 'Error')
+source("../lib/InsertedCandidate.R")
+source("../lib/DeletionDatabase.R")
+source("../lib/SubstitionDatabase.R")
+source("../lib/SearchINDatabase.R")
+source("../lib/Clean.R")
+source("../lib/FindAllCorrections.R")
+
+load("../output/data.RData")
+load("../output/detected_tokens.RData")
+
+
+  
+#### function to see if a char only have letters(SS in Clean.R)
+  
+## Only choose words
+TrueToken <- as.character(dat$true_token)
+  
+CleanTrueToken <- TrueToken[sapply(TrueToken,SS)]
+
+## lower the letters
+lower <- function(char){
+  
+  #a <- unlist(str_match_all(c,'[a-zA-Z]'))
+  #b <- paste(a[1:length(a)],collapse = "")
+  c <- tolower(char)
+  return(c)
+} 
+
+
+#### All the words in groundtruth(N in training set)
+CleanLowTrueToken <- sapply(CleanTrueToken,lower)
+  
+
+#####distinct groundtruth(Vocabulary in training set)
+V <- unique(CleanLowTrueToken)
+  
+  #mistakes because of insertion(n dictionary access to see if the nth letter was inserted)
+  # InsCan
+
+  #mistakes because of deletion(generate a deletion table and then search)
+  # generate the deletion table
+  WholeDeletionDatabase <- lapply(V,DeletionDatabasePerWord)
+    
+    
+  # generate the substition table
+   WholeSubstitionDatabase <- lapply(V,SubstitionDatabasePerWord)
+
+
+   ####Try all the corrections for one word
+   #AllCorrectionCandidates("mon")
+   
 ```
+
+* ###Find Pr(c) the prior probability
+
+
+```{r}
+source("../lib/PriorForCorrection.R")
+### use ELE method
+
+```
+
+
+* ### Generate the confusion matrix
+```{r}
+##### Find suitable training set
+
+###### Typos and Corrections
+###### First preprocess data for the confusion matrix
+###### Find the subset which only has one typo in letters
+
+
+subdat <- dat[dat$label==0,]
+
+
+ErrorToken <- as.character(subdat$error_token)
+SubTrueToken <- as.character(subdat$true_token)
+Index <- sapply(ErrorToken,SS)
+
+
+
+CleanErrorToken <- ErrorToken[Index]
+CorrespondTrueToken <- SubTrueToken[Index]
+
+CleanLowErrorToken <- sapply(CleanErrorToken,lower)
+CorrespondLowTrueToken <- sapply(CorrespondTrueToken,lower)
+
+Index2 <- CleanLowErrorToken!=CorrespondLowTrueToken
+
+
+FErrorToken <- CleanLowErrorToken[Index2]
+FTrueToken <- CorrespondLowTrueToken[Index2]
+
+###Use errors which only have one typo in the letters
+
+# source("../lib/onlyCorrectionForCM.R")
+# Index3 <- rep(NA,length(FErrorToken))
+# 
+# 
+# for (i in 1:length(FErrorToken)){
+#   Index3[i] <- is.element(FTrueToken[i],AllCorrectionCandidates1(FErrorToken[i]))
+#   if (i %% 100 == 0) {cat(i, "words finished\n")}
+# }
+
+
+#save(Index3, file = "../output/IndexWhole.RData")
+IndexWhole <- load("../output/IndexWhole.RData")
+
+FinalErrorToken <- FErrorToken[IndexWhole]
+FinalTrueToken <- FTrueToken[IndexWhole]
+
+
+
+
+```
+
+```{r}
+#######Use FinalErrorToken and FinalTrueToken to generate confusion matrix
+
+####Subsitite initial
+  SCM <- matrix(rep(0,26*26),nrow=26,ncol=26)
+  SCM <- as.data.frame(SCM,row.names=c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+                                     "p","q","r","s","t","u","v","w","x","y","z"))
+  names(SCM)<-c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+          "p","q","r","s","t","u","v","w","x","y","z")
+  
+####Add initial
+  ACM <- matrix(rep(0,27*26),nrow=27,ncol=26)
+  ACM <- as.data.frame(ACM,row.names=c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","@"))
+  names(ACM)<-c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+          "p","q","r","s","t","u","v","w","x","y","z")
+  
+#### Del initial
+  DCM <- matrix(rep(0,27*26),nrow=27,ncol=26)
+  DCM <- as.data.frame(DCM,row.names=c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","@"))
+  names(DCM)<-c("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+          "p","q","r","s","t","u","v","w","x","y","z")
+  
+  for (i in 1:length(FinalErrorToken)){
+    
+    #########Substition typo
+    if (nchar(FinalErrorToken[i])==nchar(FinalTrueToken[[i]])){
+      id <- which(unlist(strsplit(FinalErrorToken[i], "")) != unlist(strsplit(FinalTrueToken[i], "")))
+      row <- substr(FinalErrorToken[i],start=id,stop=id)
+      column <- substr(FinalTrueToken[i],start=id,stop=id)
+      SCM[row,column] <-SCM[row,column]+1 
+    }
+    
+    
+    ####### Insertion typo
+    if (nchar(FinalErrorToken[i])>nchar(FinalTrueToken[[i]])){
+      if (substr(FinalErrorToken[i],start=1,stop=1)!=substr(FinalTrueToken[i],start=1,stop=1)){
+       row <- "@"
+       column <- substr(FinalErrorToken[i],start=1,stop=1)
+       ACM[row,column] <-ACM[row,column]+1
+      }
+      else if(sum(unlist(strsplit(substr(FinalErrorToken[i],start=1,stop=nchar(FinalTrueToken[i])),""))!=unlist(strsplit(FinalTrueToken[i], "")))>0
+      ){
+        id <- min(which(unlist(strsplit(substr(FinalErrorToken[i],start=1,stop=nchar(FinalTrueToken[i])),""))!=unlist(strsplit(FinalTrueToken[i], ""))))
+        row <- substr(FinalErrorToken[i],start=id-1,stop=id-1)
+        column <- substr(FinalErrorToken[i],start=id,stop=id)
+        ACM[row,column] <-ACM[row,column]+1
+        
+      }
+      else{
+        id <-nchar(FinalTrueToken[i])
+        row <- substr(FinalErrorToken[i],start=id,stop=id)
+        column <-  substr(FinalErrorToken[i],start=id+1,stop=id+1)
+        ACM[row,column] <-ACM[row,column]+1
+        
+      }
+    }
+    
+    ####### Deletion typo
+    if (nchar(FinalErrorToken[i])<nchar(FinalTrueToken[[i]])){
+      if (substr(FinalErrorToken[i],start=1,stop=1)!=substr(FinalTrueToken[i],start=1,stop=1)){
+       row <- "@"
+       column <- substr(FinalTrueToken[i],start=1,stop=1)
+       DCM[row,column] <-DCM[row,column]+1
+      }
+      else if(sum(unlist(strsplit(substr(FinalTrueToken[i],start=1,stop=nchar(FinalErrorToken[i])),""))!=unlist(strsplit(FinalErrorToken[i], "")))>0
+      ){
+        id <- min(which(unlist(strsplit(substr(FinalTrueToken[i],start=1,stop=nchar(FinalErrorToken[i])),""))!=unlist(strsplit(FinalErrorToken[i], ""))))
+        row <- substr(FinalTrueToken[i],start=id-1,stop=id-1)
+        column <- substr(FinalTrueToken[i],start=id,stop=id)
+        DCM[row,column] <-DCM[row,column]+1
+        
+      }
+      else{
+        id <-nchar(FinalErrorToken[i])
+        row <- substr(FinalTrueToken[i],start=id,stop=id)
+        column <-  substr(FinalTrueToken[i],start=id+1,stop=id+1)
+        DCM[row,column] <-DCM[row,column]+1
+        
+      }
+    }
+  }
+  
+
+
+```
+
+
+
+
+```{r}
+##### given a word
+source("../lib/Chars.R")
+source("../lib/FinalFunction.R")
+
+#hh <- rep(NA,length(FinalErrorToken))
+
+
+#for (i in 13400:length(FinalErrorToken)){
+#  hh[i] <- Prob(FinalErrorToken[i])
+#  if (i %% 100 == 0) {cat(i, "words finished\n")}
+  
+  
+#}
+
+load("../output/CorrectionList.RData")
+FinalTryToken <- hh
+
+#### accuracy just based on these data
+
+acc <- sum(FinalTryToken==FinalTrueToken)/length(FinalTrueToken)
+acc
+
+```
+
+
+
+* ###Deal with Index
+```{r}
+dat$SVM_label <- detected_tokens$SVM_Label
+dat$ind <- 1:nrow(dat)
+In1 <- dat$ind[dat$label==0]
+In2 <- In1[Index]
+In3 <- In2[Index2]
+In4 <- In3[IndexWhole]
+dat$corrected_token <- dat$error_token
+InPred <- dat$ind[dat$SVM_label=="Error"] 
+
+InFinal <- intersect(In4,InPred)
+
+ini <- 1:39435
+InF <- ini[is.element(In4,InFinal)]
+
+dat$corrected_token <- as.character(dat$corrected_token)
+
+dat$corrected_token[InFinal] <- FinalTryToken[InF]
+
+save(dat, file = "../output/FinalDataframe.RData")
+```
+
 
 # Step 5 - Performance measure
 
