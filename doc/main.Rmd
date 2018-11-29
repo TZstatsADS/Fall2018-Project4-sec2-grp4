@@ -82,10 +82,10 @@ if (!require("quanteda")) {
 }
 library(quanteda)
 
-if (!require("e1071")) {
-  install.packages("e1071")
+if (!require("caret")) {
+  install.packages("caret")
 }
-library(e1071)
+library(caret)
 
 pacman::p_load(knitr, readr, stringr, tesseract, vecsets)
 file_name_vec <- list.files("../data/ground_truth") #100 files in total
@@ -95,7 +95,7 @@ file_name_vec <- list.files("../data/ground_truth") #100 files in total
 
 Although we have processed the Tesseract OCR and save the output txt files in the `data` folder, we include this chunk of code in order to make clear the whole pipeline to you.
 
-```{r, Feature and Label Construction}
+```{r, eval=FALSE}
 for(i in c(1:length(file_name_vec))){
   current_file_name <- sub(".txt","",file_name_vec[i])
   ## png folder is not provided on github (the code is only on demonstration purpose)
@@ -173,14 +173,72 @@ cat("------------Feature and Label Construction Done------------\n")
 save(dat, file="../output/data.RData")
 ```
 
-* ###Cross Validation
+* ###Cross Validation and SVM Training
+
+Here we cross validate $C$ and $\gamma$ and train the SVM model with each text file group.
 
 ```{r}
-# cv_ind <- sample(1:nrow(feature_dat), 10000, replace = FALSE)
-# cv_feature_dat <- feature_dat[cv_ind, ]
-# cv_label_dat <- label_dat[cv_ind, ]
-# cv <- tune(svm, train.x=cv_feature_dat, train.y=cv_label_dat$label, 
-#               kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
+load("../output/data.RData")
+source("../lib/svm.r")
+
+#Defining the groupname in the data column
+dat <- dat %>% mutate(group_num = case_when(file_num %in% c(1:10)~"A",
+                                            file_num %in% c(11:38)~"B",
+                                            file_num %in% c(39:41)~"C",
+                                            file_num %in% c(42:68)~"D",
+                                            file_num %in% c(69:100)~"E"
+))
+
+# Changing the levels of the labels
+# Converting labels to factors
+dat$label <- as.factor(as.character(dat$label))
+
+# Splitting the dataset by groups
+groupsplit <- split(dat,dat$group_num)
+
+# Results
+a <- svm.func(groupsplit$A)
+b <- svm.func(groupsplit$B)
+c <- svm.func(groupsplit$C)
+d <- svm.func(groupsplit$D)
+e <- svm.func(groupsplit$E)
+
+#Saving the outputs
+svm_prediction <- rbind(matrix(a$pred),matrix(b$pred),
+                        matrix(c$pred),matrix(d$pred), 
+                        matrix(e$pred))
+prediction_list <- list(svm_prediction)
+
+# Saving the results
+save(svm_prediction, file = "../output/SvmLabels.RData")
+save(prediction_list, file = "../output/SvmLabels.RData")
+
+confs <- cbind(a$conf$overall[1],b$conf$overall[1],
+               c$conf$overall[1],d$conf$overall[1],
+               e$conf$overall[1])
+colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4","Group 5")
+save(confs, file = "../output/accuracy.RData")
+
+# #Saving the outputs
+# abcd <- rbind(matrix(a$pred),matrix(b$pred),matrix(c$pred),matrix(d$pred))
+# abcd.list <- list(abcd)
+# 
+# # Saving the results
+# save(abcd, file = "../output/tempSvmLabels.RData")
+# save(abcd.list, file = "../output/listtempSvmLabels.RData")
+# 
+# confs <- cbind(a$conf$overall[1],b$conf$overall[1],c$conf$overall[1],d$conf$overall[1])
+# colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4")
+# 
+# save(confs, file = "../output/accuracy.RData")
+```
+
+
+
+```{r}
+load("../output/accuracy.RData")
+load("../output/listtempSvmLabels.RData")
+load("../output/tempSvmLabels.RData")
 ```
 
 # Step 4 - Error correction
