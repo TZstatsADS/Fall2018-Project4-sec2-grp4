@@ -17,7 +17,7 @@ Term: Fall 2018
 + **Project summary**: In this project, we created an OCR post-processing procedure to enhance Tesseract OCR output in two steps. We split the text files by group and for each group, as a first step, classify each word using Cross-validated Support Vector Machines as erroneous and correct. After detecting the erroneous words, we perform error correction using probability scoring on them and finally evaluate our model performance using precision and recall. 
 	
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md))
-	+ Tao Han:
+	+ Tao Han: Contributed to the presentation slides and presented the project to class.
 	+ Zhirong Li: Worked on performance measure in word level and character level.
 	+ Atishay Sehgal: Worked on Error Detection - Contributed to Feature & Label Extraction, implemented cross-validated 			       SVM. Implemented improvements in computational speed of SVM. Provided ideas for error correction 			  speed improvements.
 	+ Lujia Wang: Worked on Error Detection - Worked on feature construction, training data set generation and SVM training. Assisted Jiaqian handling some computation on Error Correction. Helped with the presentation slides and discussed with teammates.
