@@ -19,9 +19,12 @@ SearchINCandidate <- function(word,database){
       candidate <- append(candidate,c(C,X,Y))
     }
   }
-  for(k in 1:(length(candidate)/3)){
-    output[[k]] <- list(corr=candidate[[3*k-2]],X=candidate[[3*k-1]],Y=candidate[[3*k]])
+  if (length(candidate)>0){
+    for(k in 1:(length(candidate)/3)){
+      output[[k]] <- list(corr=candidate[[3*k-2]],X=candidate[[3*k-1]],Y=candidate[[3*k]])
+    }
   }
+ 
   return(output)
 }
 
