@@ -6,17 +6,22 @@
 
 Term: Fall 2018
 
-+ Team #
++ Group 4
 + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
+	+ Tao Han
+	+ Zhirong Li
+	+ Atishay Sehgal
+	+ Lujia Wang
+	+ Jiaqian Yu
 
-+ Project summary: In this project, we created an OCR post-processing procedure to enhance Tesseract OCR output. 
++ Project summary: In this project, we created an OCR post-processing procedure to enhance Tesseract OCR output in two steps. We split the text files by group and for each group, as a first step, classify each word using Cross-validated Support Vector Machines as erroneous and correct. Secondly we perform error correction using probability scoring on the erroneous tokens. 
 	
-**Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+**Contribution statement**: ([default](doc/a_note_on_contributions.md))
+Tao Han:
+Zhirong Li:
+Atishay Sehgal:
+Lujia Wang:
+Jiaqian Yu:
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
