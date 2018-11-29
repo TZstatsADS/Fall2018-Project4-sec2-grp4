@@ -7,7 +7,7 @@
 library(stringr)
 library(quanteda)
 library(dplyr)
-library(stringdist)
+
 SubstitionDatabasePerWord <- function(word){
   possiblewordperchar <- rep(NA,26)
   

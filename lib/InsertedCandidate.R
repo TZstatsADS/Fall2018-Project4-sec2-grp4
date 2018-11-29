@@ -7,7 +7,7 @@
 library(stringr)
 library(quanteda)
 library(dplyr)
-library(stringdist)
+
 InsertedCandidate <- function(word){
   possibleword <- rep(NA,nchar(word))
   Y <- rep(NA,nchar(word))

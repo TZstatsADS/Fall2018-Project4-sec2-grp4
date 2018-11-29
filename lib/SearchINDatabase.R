@@ -7,7 +7,7 @@
 library(stringr)
 library(quanteda)
 library(dplyr)
-library(stringdist)
+
 SearchINCandidate <- function(word,database){
   candidate <- list()
   output <- list()

@@ -7,7 +7,7 @@
 library(stringr)
 library(quanteda)
 library(dplyr)
-library(stringdist)
+
 DeletionDatabasePerWord <- function(word){
   DeletionCandidateList <- list()
   possibleword <- rep(NA,nchar(word))
