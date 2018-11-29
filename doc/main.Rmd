@@ -139,56 +139,48 @@ source("../lib/extractLabel.R")
 
 # read 100 files
 cat("------------Start Feature and Label Construction------------\n")
-for (i in 1:length(file_name_vec)){
+dat <- NULL
+for (i in 1:length(file_name_vec)) {
   ## set current file name
-  current_file_name <- sub(".txt","",file_name_vec[i])
+  current_file_name <- sub(".txt", "", file_name_vec[i])
   ## read the ground truth text
   current_ground_truth_txt <-
-    readLines(paste("../data/ground_truth/",current_file_name,".txt",sep=""),warn=FALSE)
+    readLines(paste("../data/ground_truth/", current_file_name, ".txt", sep =""), warn = FALSE)
   ## read the tesseract text
-  current_tesseract_txt <- 
-    readLines(paste("../data/tesseract/",current_file_name,".txt",sep=""),warn=FALSE)
-  #tokenize tesseract output
-  clean_tesseract_txt <- paste(current_tesseract_txt, collapse = " ")
-  tesseract_vec <- str_split(clean_tesseract_txt," ")[[1]]
-  # generate features for every token in the current file
-  current_feat <- as.data.frame(t(sapply(tesseract_vec, extractFeature)))
-  # generate labels for every token in the current file
-  current_label <- unlist(sapply(1:length(current_tesseract_txt), extractLabel,
-                         current_tesseract_txt,current_ground_truth_txt))
-  # generate data frame consists of (word, filenum, index of word, label)
-  current_dat <- data.frame(word = tesseract_vec,
-                  filenum = i,
-                  index = index(tesseract_vec),
-                  label = current_label)
-  # merge the feature and label data frame with previous ones
-  if (i == 1) {
-    label_dat <- current_dat
-    feature_dat <- current_feat
-  } else {
-    label_dat <- rbind(label_dat, current_dat)
-    feature_dat <- rbind(feature_dat, current_feat)
+  current_tesseract_txt <-
+    readLines(paste("../data/tesseract/", current_file_name, ".txt", sep =""), warn = FALSE)
+  # tokenize tesseract output
+  clean_tesseract_txt <-
+    paste(current_tesseract_txt, collapse = " ")
+  tesseract_vec <- str_split(clean_tesseract_txt, " ")[[1]]
+  # generate feature, label and other information of current file
+  current_dat <- NULL
+  for (j in 1:length(current_tesseract_txt)) {
+    line_info <-
+      extractInfo(j, current_tesseract_txt, current_ground_truth_txt)
+    current_dat <- as.data.frame(rbind(current_dat, line_info))
   }
+  current_dat$file_num <- i
+  # merge the feature and label data frame with previous ones
+  dat <- rbind(dat, current_dat)
   # print message
-  if (i %% 10 == 0) {cat(i, "files finished\n")}
+  if (i %% 10 == 0) {
+    cat(i, "files finished\n")
+  }
 }
 cat("------------Feature and Label Construction Done------------\n")
 
-
-save(feature_dat, file = "../output/feature_dat.RData")
-save(label_dat, file = "../output/label_dat.RData")
+save(dat, file="../output/data.RData")
 ```
 
 * ###Cross Validation
 
 ```{r}
-load("../output/feature_dat.RData")
-load("../output/label_dat.RData")
-cv_ind <- sample(1:nrow(feature_dat), 10000, replace = FALSE)
-cv_feature_dat <- feature_dat[cv_ind, ]
-cv_label_dat <- label_dat[cv_ind, ]
-cv <- tune(svm, train.x=cv_feature_dat, train.y=cv_label_dat$label, 
-              kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
+# cv_ind <- sample(1:nrow(feature_dat), 10000, replace = FALSE)
+# cv_feature_dat <- feature_dat[cv_ind, ]
+# cv_label_dat <- label_dat[cv_ind, ]
+# cv <- tune(svm, train.x=cv_feature_dat, train.y=cv_label_dat$label, 
+#               kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
 ```
 
 # Step 4 - Error correction
