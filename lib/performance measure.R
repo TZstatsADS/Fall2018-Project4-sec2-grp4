@@ -1,4 +1,10 @@
-measure <- function(error_correct_word) {
+###################################
+## input: dataframe with corrected words(first column) and corresponding truth words(second column) 
+          # the order of columns only affect line 19. It should be corrected words
+## output: performance measure table
+###################################
+
+measure <- function(df) {
   load("../output/data.RData")
   load("../output/current_ground_truth_txt.RData")
   load("../output/tesseract_vec.RData")
@@ -10,7 +16,7 @@ measure <- function(error_correct_word) {
   # new interaction
   error_word <- as.vector(dat$error_token[dat$label == 0])
   correct_word <- setdiff(tolower(tesseract_vec), error_word)
-  error_correct_word <- error_correct_word # from correction part
+  error_correct_word <- df[, 1] # corrected words
   tesseract_delete_error_vec <- c(correct_word, error_correct_word)
   new_intersect_vec <- vecsets::vintersect(tolower(ground_truth_vec), tolower(tesseract_delete_error_vec))
   
@@ -29,10 +35,9 @@ measure <- function(error_correct_word) {
   tesseract_vec_char <- str_split(paste(tesseract_vec, collapse = ""), "")[[1]]
   old_intersect_vec_char <- vecsets::vintersect(tolower(ground_truth_vec_char), tolower(tesseract_vec_char))
   # new interaction
-  df <- data.frame(error_correct_word=tolower(error_correct_word), 
-                   true_token=tolower(dat$true_token[dat$label == 0]))
+  # function used to compare pairs of words in character level
   fun <- function(row) {
-    return(vecsets::vintersect(str_split(row$error_correct_word,""), str_split(row$true_token,"")))
+    return(vecsets::vintersect(str_split(row[1],""), str_split(row[2],"")))
   }
   correct_char <- str_split(paste(correct_word, collapse = ""),"")[[1]]
   new_intersect_vec_char <- c(vecsets::vintersect(tolower(ground_truth_vec_char), tolower(correct_char)), apply(df, 1, fun))
