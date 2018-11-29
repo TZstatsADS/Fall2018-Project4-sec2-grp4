@@ -190,11 +190,11 @@ dat <- dat %>% mutate(group_num = case_when(file_num %in% c(1:10)~"A",
 ))
 
 # Changing the levels of the labels
-dat <- dat %>% mutate(label = case_when(label == 1 ~ "Correct",
-                                        label == 0 ~ "Error"))
+dat <- dat %>% mutate(label = case_when(label == 1 ~"Correct",
+                                        label == 0 ~"Error"))
+
 # Converting labels to factors
 dat$label <- factor(dat$label)
-
 # Splitting the dataset by groups
 groupsplit <- split(dat,dat$group_num)
 
@@ -203,44 +203,34 @@ a <- svm.func(groupsplit$A)
 b <- svm.func(groupsplit$B)
 c <- svm.func(groupsplit$C)
 d <- svm.func(groupsplit$D)
-e <- svm.func(groupsplit$E)
+e <- svm.func.2(groupsplit$E)
 
 #Saving the outputs
-svm_prediction <- rbind(matrix(a$pred),matrix(b$pred),
-                        matrix(c$pred),matrix(d$pred), 
-                        matrix(e$pred))
-prediction_list <- list(svm_prediction)
+predicted_labels <- rbind(matrix(a$pred),matrix(b$pred),
+                          matrix(c$pred),matrix(d$pred),
+                          matrix(e$pred))
+predicted_labels_list <- list(predicted_labels)
 
-# Saving the results
-save(svm_prediction, file = "../output/SvmLabels.RData")
-save(prediction_list, file = "../output/SvmLabels.RData")
+#save(predicted_labels, file = "../output/tempSvmLabels.RData")
+#save(predicted_labels.list, file = "../output/listtempSvmLabels.RData")
 
 confs <- cbind(a$conf$overall[1],b$conf$overall[1],
                c$conf$overall[1],d$conf$overall[1],
                e$conf$overall[1])
 colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4","Group 5")
+
+detected_tokens <- cbind(rbind(matrix(groupsplit$A$error_token),
+                               matrix(groupsplit$B$error_token),
+                               matrix(groupsplit$C$error_token),
+                               matrix(groupsplit$D$error_token),
+                               matrix(groupsplit$E$error_token)), 
+                         predicted_labels)
+
+colnames(detected_tokens) <- c("Tesseract_Output","SVM_Label")
+
+# Saving the results
 save(confs, file = "../output/accuracy.RData")
-
-# #Saving the outputs
-# abcd <- rbind(matrix(a$pred),matrix(b$pred),matrix(c$pred),matrix(d$pred))
-# abcd.list <- list(abcd)
-# 
-# # Saving the results
-# save(abcd, file = "../output/tempSvmLabels.RData")
-# save(abcd.list, file = "../output/listtempSvmLabels.RData")
-# 
-# confs <- cbind(a$conf$overall[1],b$conf$overall[1],c$conf$overall[1],d$conf$overall[1])
-# colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4")
-# 
-# save(confs, file = "../output/accuracy.RData")
-```
-
-
-
-```{r}
-load("../output/accuracy.RData")
-load("../output/listtempSvmLabels.RData")
-load("../output/tempSvmLabels.RData")
+save(detected_tokens, file = "../output/detected_tokens.RData")
 ```
 
 # Step 4 - Error correction
@@ -267,7 +257,10 @@ The referenced papers are:
 
 Here, in our code, we just simply remove the detected-errors.
 ```{r}
-tesseract_delete_error_vec <- tesseract_vec[tesseract_if_clean] #1095
+load("../output/detected_tokens.RData") #258977
+# filter the tokens that detected as zero
+detected_tokens <- as.data.frame(detected_tokens)
+error_tokens <- detected_tokens %>% filter(SVM_Label == 'Error')
 ```
 
 # Step 5 - Performance measure
