@@ -449,7 +449,6 @@ acc
 ```
 
 
-
 * ###Deal with Index
 ```{r}
 dat$SVM_label <- detected_tokens$SVM_Label
