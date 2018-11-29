@@ -132,7 +132,7 @@ save(dat, file="../output/data.RData")
 
 * ###Cross Validation and SVM Training
 
-Here we cross validate $C$ and $\gamma$ and train the SVM model with each text file group.
+Here we cross validate $C$ and $\sigma$ and train the SVM model with each text file group.
 
 ```{r}
 load("../output/data.RData")
@@ -270,3 +270,7 @@ Besides the above required measurement, you are encouraged the explore more eval
 
 2. Kukich, K. (1992). *Techniques for automatically correcting words in text*. Acm Computing Surveys (CSUR), 24(4), 377-439. [pdf](http://www.unige.ch/eti/ptt/docs/kukich-92.pdf)
 (This paper is the benchmark review paper)
+
+3. Wudtke, Richard & Ringlstetter, Christoph & U. Schulz, Klaus. (2011). *Recognizing garbage in OCR output on historical documents.* ACM International Conference Proceeding Series. 10.1145/2034617.2034626.
+
+4. Church, K.W. & Gale, W.A. Stat Comput (1991) *Probability Scoring for Error Correction* 1: 93. https://doi.org/10.1007/BF01889984
