@@ -190,8 +190,10 @@ dat <- dat %>% mutate(group_num = case_when(file_num %in% c(1:10)~"A",
 ))
 
 # Changing the levels of the labels
+dat <- dat %>% mutate(label = case_when(label == 1 ~ "Correct",
+                                        label == 0 ~ "Error"))
 # Converting labels to factors
-dat$label <- as.factor(as.character(dat$label))
+dat$label <- factor(dat$label)
 
 # Splitting the dataset by groups
 groupsplit <- split(dat,dat$group_num)
