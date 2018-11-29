@@ -41,9 +41,6 @@ svm.func <- function(dat){
   # the model results
   pred <- predict(svm_model, newdata = apply(dat[,c(1:14)],2,as.numeric))
   
-  # probabilities
-  predictedProbs <- predict(svm_model, apply(dat[,c(1:14)],2,as.numeric), type = "prob")
-  
   # confusion matrix of the results
   conf <- confusionMatrix(pred, dat$label)
   
@@ -73,3 +70,10 @@ confs <- cbind(a$conf$overall[1],b$conf$overall[1],c$conf$overall[1],d$conf$over
 colnames(confs) <- c("Group 1","Group 2","Group 3","Group 4")
 
 save(confs, file = "../output/accuracy.RData")
+
+
+detected_tokens <- cbind(rbind(matrix(groupsplit$A$error_token),matrix(groupsplit$B$error_token),
+                               matrix(groupsplit$C$error_token),matrix(groupsplit$D$error_token)), abcd)
+
+
+save(detected_tokens, file = "./output/detected_tokens.RData")
