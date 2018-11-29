@@ -191,7 +191,7 @@ $(document).ready(function () {
 <h1>Step 1 - Load library and source code</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKCFyZXF1aXJlKFwiZGV2dG9vbHNcIikpIGluc3RhbGwucGFja2FnZXMoXCJkZXZ0b29sc1wiKVxuaWYgKCFyZXF1aXJlKFwicGFjbWFuXCIpKSB7XG4gICMjIGRldnRvb2xzIGlzIHJlcXVpcmVkXG4gIGxpYnJhcnkoZGV2dG9vbHMpXG4gIGluc3RhbGxfZ2l0aHViKFwidHJpbmtlci9wYWNtYW5cIilcbn1cbmlmICghcmVxdWlyZShcInpvb1wiKSkge1xuICBpbnN0YWxsLnBhY2thZ2VzKFwiem9vXCIpXG59XG5saWJyYXJ5KHpvbylcblxuaWYgKCFyZXF1aXJlKFwiZHBseXJcIikpIHtcbiAgaW5zdGFsbC5wYWNrYWdlcyhcImRwbHlyXCIpXG59XG5saWJyYXJ5KGRwbHlyKVxuXG5pZiAoIXJlcXVpcmUoXCJxdWFudGVkYVwiKSkge1xuICBpbnN0YWxsLnBhY2thZ2VzKFwicXVhbnRlZGFcIilcbn1cbmxpYnJhcnkocXVhbnRlZGEpXG5cbmlmICghcmVxdWlyZShcImNhcmV0XCIpKSB7XG4gIGluc3RhbGwucGFja2FnZXMoXCJjYXJldFwiKVxufVxubGlicmFyeShjYXJldClcblxucGFjbWFuOjpwX2xvYWQoa25pdHIsIHJlYWRyLCBzdHJpbmdyLCB0ZXNzZXJhY3QsIHZlY3NldHMpXG5maWxlX25hbWVfdmVjIDwtIGxpc3QuZmlsZXMoXCIuLi9kYXRhL2dyb3VuZF90cnV0aFwiKSAjMTAwIGZpbGVzIGluIHRvdGFsXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKCFyZXF1aXJlKFwiZGV2dG9vbHNcIikpIGluc3RhbGwucGFja2FnZXMoXCJkZXZ0b29sc1wiKVxuaWYgKCFyZXF1aXJlKFwicGFjbWFuXCIpKSB7XG4gICMjIGRldnRvb2xzIGlzIHJlcXVpcmVkXG4gIGxpYnJhcnkoZGV2dG9vbHMpXG4gIGluc3RhbGxfZ2l0aHViKFwidHJpbmtlci9wYWNtYW5cIilcbn1cbmlmICghcmVxdWlyZShcInpvb1wiKSkge1xuICBpbnN0YWxsLnBhY2thZ2VzKFwiem9vXCIpXG59XG5saWJyYXJ5KHpvbylcbmlmICghcmVxdWlyZShcImRwbHlyXCIpKSB7XG4gIGluc3RhbGwucGFja2FnZXMoXCJkcGx5clwiKVxufVxubGlicmFyeShkcGx5cilcbmlmICghcmVxdWlyZShcInF1YW50ZWRhXCIpKSB7XG4gIGluc3RhbGwucGFja2FnZXMoXCJxdWFudGVkYVwiKVxufVxubGlicmFyeShxdWFudGVkYSlcbmlmICghcmVxdWlyZShcImNhcmV0XCIpKSB7XG4gIGluc3RhbGwucGFja2FnZXMoXCJjYXJldFwiKVxufVxubGlicmFyeShjYXJldClcbnBhY21hbjo6cF9sb2FkKGtuaXRyLCByZWFkciwgc3RyaW5nciwgdGVzc2VyYWN0LCB2ZWNzZXRzKVxuZmlsZV9uYW1lX3ZlYyA8LSBsaXN0LmZpbGVzKFwiLi4vZGF0YS9ncm91bmRfdHJ1dGhcIikgIzEwMCBmaWxlcyBpbiB0b3RhbFxuYGBgIn0= -->
 <pre class="r"><code>if (!require(&quot;devtools&quot;)) install.packages(&quot;devtools&quot;)
 if (!require(&quot;pacman&quot;)) {
   ## devtools is required
@@ -202,22 +202,18 @@ if (!require(&quot;zoo&quot;)) {
   install.packages(&quot;zoo&quot;)
 }
 library(zoo)
-
 if (!require(&quot;dplyr&quot;)) {
   install.packages(&quot;dplyr&quot;)
 }
 library(dplyr)
-
 if (!require(&quot;quanteda&quot;)) {
   install.packages(&quot;quanteda&quot;)
 }
 library(quanteda)
-
 if (!require(&quot;caret&quot;)) {
   install.packages(&quot;caret&quot;)
 }
 library(caret)
-
 pacman::p_load(knitr, readr, stringr, tesseract, vecsets)
 file_name_vec &lt;- list.files(&quot;../data/ground_truth&quot;) #100 files in total</code></pre>
 <!-- rnb-source-end -->
@@ -689,10 +685,9 @@ The two most common OCR accuracy measures are precision and recall. Both are rel
 <p>Both <em>precision</em> and <em>recall</em> are mathematically convenient measures because their numeric values are some decimal fractions in the range between 0.0 and 1.0, and thus can be written as percentages. For instance, recall is the percentage of words in the original text correctly found by the OCR engine, whereas precision is the percentage of correctly found words with respect to the total word count of the OCR output. Note that in the OCR-related literature, the term OCR accuracy often refers to recall.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZChcIi4uL291dHB1dC9GaW5hbERhdGFmcmFtZS5SRGF0YVwiKVxubG9hZChcIi4uL291dHB1dC9BTExncm91bmR0cnV0aF92ZWMuUkRhdGFcIilcblxuIyB3b3JkIGxldmVsIGV2YWx1YXRpb25cbiMgb2xkIGludGVyYWN0aW9uXG5vbGRfaW50ZXJzZWN0X3ZlYyA8LSBkYXQkZXJyb3JfdG9rZW5bZGF0JGxhYmVsID09IDFdXG4jIG5ldyBpbnRlcmFjdGlvblxubmV3X2ludGVyc2VjdF92ZWMgPC0gdmVjc2V0czo6dmludGVyc2VjdCh0b2xvd2VyKGRhdCR0cnVlX3Rva2VuW2RhdCRsYWJlbCA9PSAwXSksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0b2xvd2VyKGRhdCRjb3JyZWN0ZWRfdG9rZW5bZGF0JGxhYmVsID09IDBdKSlcbm5ld19pbnRlcnNlY3RfdmVjMiA8LSBjKG9sZF9pbnRlcnNlY3RfdmVjLCBuZXdfaW50ZXJzZWN0X3ZlYylcblxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlIDwtIGRhdGEuZnJhbWUoXCJUZXNzZXJhY3RcIiA9IHJlcChOQSw0KSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiVGVzc2VyYWN0X3dpdGhfcG9zdHByb2Nlc3NpbmdcIiA9IHJlcChOQSw0KSlcbnJvdy5uYW1lcyhPQ1JfcGVyZm9ybWFuY2VfdGFibGUpIDwtIGMoXCJ3b3JkX3dpc2VfcmVjYWxsXCIsXCJ3b3JkX3dpc2VfcHJlY2lzaW9uXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiY2hhcmFjdGVyX3dpc2VfcmVjYWxsXCIsXCJjaGFyYWN0ZXJfd2lzZV9wcmVjaXNpb25cIilcbk9DUl9wZXJmb3JtYW5jZV90YWJsZVtcIndvcmRfd2lzZV9yZWNhbGxcIixcIlRlc3NlcmFjdFwiXSA8LSBsZW5ndGgob2xkX2ludGVyc2VjdF92ZWMpL2xlbmd0aChBTExncm91bmR0cnV0aF92ZWMpXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGVbXCJ3b3JkX3dpc2VfcHJlY2lzaW9uXCIsXCJUZXNzZXJhY3RcIl0gPC0gbGVuZ3RoKG9sZF9pbnRlcnNlY3RfdmVjKS9sZW5ndGgoZGF0JGVycm9yX3Rva2VuKVxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wid29yZF93aXNlX3JlY2FsbFwiLFwiVGVzc2VyYWN0X3dpdGhfcG9zdHByb2Nlc3NpbmdcIl0gPC0gbGVuZ3RoKG5ld19pbnRlcnNlY3RfdmVjMikvbGVuZ3RoKEFMTGdyb3VuZHRydXRoX3ZlYylcbk9DUl9wZXJmb3JtYW5jZV90YWJsZVtcIndvcmRfd2lzZV9wcmVjaXNpb25cIixcIlRlc3NlcmFjdF93aXRoX3Bvc3Rwcm9jZXNzaW5nXCJdIDwtIGxlbmd0aChuZXdfaW50ZXJzZWN0X3ZlYzIpL2xlbmd0aChkYXQkZXJyb3JfdG9rZW4pXG5cbiMgY2hhcmFjdGVyLWxldmVsIGV2YWx1YXRpb25cbiMgb2xkIGludGVyYWN0aW9uXG5ncm91bmRfdHJ1dGhfdmVjX2NoYXIgPC0gc3RyX3NwbGl0KHBhc3RlKEFMTGdyb3VuZHRydXRoX3ZlYywgY29sbGFwc2UgPSBcIlwiKSwgXCJcIilbWzFdXVxudGVzc2VyYWN0X3ZlY19jaGFyIDwtIHN0cl9zcGxpdChwYXN0ZShkYXQkZXJyb3JfdG9rZW4sIGNvbGxhcHNlID0gXCJcIiksIFwiXCIpW1sxXV1cbm9sZF9pbnRlcnNlY3RfdmVjX2NoYXIgPC0gc3RyX3NwbGl0KHBhc3RlKGRhdCRlcnJvcl90b2tlbltkYXQkbGFiZWwgPT0gMV0sIGNvbGxhcHNlID0gXCJcIiksIFwiXCIpW1sxXV1cbiMgbmV3IGludGVyYWN0aW9uXG4jIGZ1bmN0aW9uIHVzZWQgdG8gY29tcGFyZSBwYWlycyBvZiB3b3JkcyBpbiBjaGFyYWN0ZXIgbGV2ZWxcbmRmIDwtIGRhdGEuZnJhbWUodHJ1ZV90b2tlbj1kYXQkdHJ1ZV90b2tlbltkYXQkbGFiZWwgPT0gMF0sIFxuICAgICAgICAgICAgICAgICBjb3JyZWN0ZWRfdG9rZW49ZGF0JGNvcnJlY3RlZF90b2tlbltkYXQkbGFiZWwgPT0gMF0pXG5mdW4gPC0gZnVuY3Rpb24ocm93KSB7XG4gIHJldHVybih2ZWNzZXRzOjp2aW50ZXJzZWN0KHN0cl9zcGxpdCh0b2xvd2VyKHJvd1sxXSksXCJcIilbWzFdXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RyX3NwbGl0KHRvbG93ZXIocm93WzJdKSxcIlwiKVtbMV1dKSlcbn1cbmNvcnJlY3RfY2hhciA9IGFwcGx5KGFzLm1hdHJpeChkZiksIDEsIGZ1bilcbm5ld19pbnRlcnNlY3RfdmVjX2NoYXIgPC0gYyhvbGRfaW50ZXJzZWN0X3ZlY19jaGFyLCB1bmxpc3QoY29ycmVjdF9jaGFyKSlcblxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wiY2hhcmFjdGVyX3dpc2VfcmVjYWxsXCIsXCJUZXNzZXJhY3RcIl0gPC0gbGVuZ3RoKG9sZF9pbnRlcnNlY3RfdmVjX2NoYXIpL2xlbmd0aChncm91bmRfdHJ1dGhfdmVjX2NoYXIpXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGVbXCJjaGFyYWN0ZXJfd2lzZV9wcmVjaXNpb25cIixcIlRlc3NlcmFjdFwiXSA8LSBsZW5ndGgob2xkX2ludGVyc2VjdF92ZWNfY2hhcikvbGVuZ3RoKHRlc3NlcmFjdF92ZWNfY2hhcilcbk9DUl9wZXJmb3JtYW5jZV90YWJsZVtcImNoYXJhY3Rlcl93aXNlX3JlY2FsbFwiLFwiVGVzc2VyYWN0X3dpdGhfcG9zdHByb2Nlc3NpbmdcIl0gPC0gbGVuZ3RoKG5ld19pbnRlcnNlY3RfdmVjX2NoYXIpL2xlbmd0aChncm91bmRfdHJ1dGhfdmVjX2NoYXIpXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGVbXCJjaGFyYWN0ZXJfd2lzZV9wcmVjaXNpb25cIixcIlRlc3NlcmFjdF93aXRoX3Bvc3Rwcm9jZXNzaW5nXCJdIDwtIGxlbmd0aChuZXdfaW50ZXJzZWN0X3ZlY19jaGFyKS9sZW5ndGgodGVzc2VyYWN0X3ZlY19jaGFyKVxuXG5rYWJsZShPQ1JfcGVyZm9ybWFuY2VfdGFibGUsIGNhcHRpb249XCJTdW1tYXJ5IG9mIE9DUiBwZXJmb3JtYW5jZVwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZChcIi4uL291dHB1dC9GaW5hbERhdGFmcmFtZS5SRGF0YVwiKVxubG9hZChcIi4uL291dHB1dC9BTExncm91bmR0cnV0aF92ZWMuUkRhdGFcIilcbiMgd29yZCBsZXZlbCBldmFsdWF0aW9uXG4jIG9sZCBpbnRlcmFjdGlvblxub2xkX2ludGVyc2VjdF92ZWMgPC0gZGF0JGVycm9yX3Rva2VuW2RhdCRsYWJlbCA9PSAxXVxuIyBuZXcgaW50ZXJhY3Rpb25cbm5ld19pbnRlcnNlY3RfdmVjIDwtIHZlY3NldHM6OnZpbnRlcnNlY3QodG9sb3dlcihkYXQkdHJ1ZV90b2tlbltkYXQkbGFiZWwgPT0gMF0pLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9sb3dlcihkYXQkY29ycmVjdGVkX3Rva2VuW2RhdCRsYWJlbCA9PSAwXSkpXG5uZXdfaW50ZXJzZWN0X3ZlYzIgPC0gYyhvbGRfaW50ZXJzZWN0X3ZlYywgbmV3X2ludGVyc2VjdF92ZWMpXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGUgPC0gZGF0YS5mcmFtZShcIlRlc3NlcmFjdFwiID0gcmVwKE5BLDQpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJUZXNzZXJhY3Rfd2l0aF9wb3N0cHJvY2Vzc2luZ1wiID0gcmVwKE5BLDQpKVxucm93Lm5hbWVzKE9DUl9wZXJmb3JtYW5jZV90YWJsZSkgPC0gYyhcIndvcmRfd2lzZV9yZWNhbGxcIixcIndvcmRfd2lzZV9wcmVjaXNpb25cIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJjaGFyYWN0ZXJfd2lzZV9yZWNhbGxcIixcImNoYXJhY3Rlcl93aXNlX3ByZWNpc2lvblwiKVxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wid29yZF93aXNlX3JlY2FsbFwiLFwiVGVzc2VyYWN0XCJdIDwtIGxlbmd0aChvbGRfaW50ZXJzZWN0X3ZlYykvbGVuZ3RoKEFMTGdyb3VuZHRydXRoX3ZlYylcbk9DUl9wZXJmb3JtYW5jZV90YWJsZVtcIndvcmRfd2lzZV9wcmVjaXNpb25cIixcIlRlc3NlcmFjdFwiXSA8LSBsZW5ndGgob2xkX2ludGVyc2VjdF92ZWMpL2xlbmd0aChkYXQkZXJyb3JfdG9rZW4pXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGVbXCJ3b3JkX3dpc2VfcmVjYWxsXCIsXCJUZXNzZXJhY3Rfd2l0aF9wb3N0cHJvY2Vzc2luZ1wiXSA8LSBsZW5ndGgobmV3X2ludGVyc2VjdF92ZWMyKS9sZW5ndGgoQUxMZ3JvdW5kdHJ1dGhfdmVjKVxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wid29yZF93aXNlX3ByZWNpc2lvblwiLFwiVGVzc2VyYWN0X3dpdGhfcG9zdHByb2Nlc3NpbmdcIl0gPC0gbGVuZ3RoKG5ld19pbnRlcnNlY3RfdmVjMikvbGVuZ3RoKGRhdCRlcnJvcl90b2tlbilcbiMgY2hhcmFjdGVyLWxldmVsIGV2YWx1YXRpb25cbiMgb2xkIGludGVyYWN0aW9uXG5ncm91bmRfdHJ1dGhfdmVjX2NoYXIgPC0gc3RyX3NwbGl0KHBhc3RlKEFMTGdyb3VuZHRydXRoX3ZlYywgY29sbGFwc2UgPSBcIlwiKSwgXCJcIilbWzFdXVxudGVzc2VyYWN0X3ZlY19jaGFyIDwtIHN0cl9zcGxpdChwYXN0ZShkYXQkZXJyb3JfdG9rZW4sIGNvbGxhcHNlID0gXCJcIiksIFwiXCIpW1sxXV1cbm9sZF9pbnRlcnNlY3RfdmVjX2NoYXIgPC0gc3RyX3NwbGl0KHBhc3RlKGRhdCRlcnJvcl90b2tlbltkYXQkbGFiZWwgPT0gMV0sIGNvbGxhcHNlID0gXCJcIiksIFwiXCIpW1sxXV1cbiMgbmV3IGludGVyYWN0aW9uXG4jIGZ1bmN0aW9uIHVzZWQgdG8gY29tcGFyZSBwYWlycyBvZiB3b3JkcyBpbiBjaGFyYWN0ZXIgbGV2ZWxcbmRmIDwtIGRhdGEuZnJhbWUodHJ1ZV90b2tlbj1kYXQkdHJ1ZV90b2tlbltkYXQkbGFiZWwgPT0gMF0sIFxuICAgICAgICAgICAgICAgICBjb3JyZWN0ZWRfdG9rZW49ZGF0JGNvcnJlY3RlZF90b2tlbltkYXQkbGFiZWwgPT0gMF0pXG5mdW4gPC0gZnVuY3Rpb24ocm93KSB7XG4gIHJldHVybih2ZWNzZXRzOjp2aW50ZXJzZWN0KHN0cl9zcGxpdCh0b2xvd2VyKHJvd1sxXSksXCJcIilbWzFdXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RyX3NwbGl0KHRvbG93ZXIocm93WzJdKSxcIlwiKVtbMV1dKSlcbn1cbmNvcnJlY3RfY2hhciA9IGFwcGx5KGFzLm1hdHJpeChkZiksIDEsIGZ1bilcbm5ld19pbnRlcnNlY3RfdmVjX2NoYXIgPC0gYyhvbGRfaW50ZXJzZWN0X3ZlY19jaGFyLCB1bmxpc3QoY29ycmVjdF9jaGFyKSlcbk9DUl9wZXJmb3JtYW5jZV90YWJsZVtcImNoYXJhY3Rlcl93aXNlX3JlY2FsbFwiLFwiVGVzc2VyYWN0XCJdIDwtIGxlbmd0aChvbGRfaW50ZXJzZWN0X3ZlY19jaGFyKS9sZW5ndGgoZ3JvdW5kX3RydXRoX3ZlY19jaGFyKVxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wiY2hhcmFjdGVyX3dpc2VfcHJlY2lzaW9uXCIsXCJUZXNzZXJhY3RcIl0gPC0gbGVuZ3RoKG9sZF9pbnRlcnNlY3RfdmVjX2NoYXIpL2xlbmd0aCh0ZXNzZXJhY3RfdmVjX2NoYXIpXG5PQ1JfcGVyZm9ybWFuY2VfdGFibGVbXCJjaGFyYWN0ZXJfd2lzZV9yZWNhbGxcIixcIlRlc3NlcmFjdF93aXRoX3Bvc3Rwcm9jZXNzaW5nXCJdIDwtIGxlbmd0aChuZXdfaW50ZXJzZWN0X3ZlY19jaGFyKS9sZW5ndGgoZ3JvdW5kX3RydXRoX3ZlY19jaGFyKVxuT0NSX3BlcmZvcm1hbmNlX3RhYmxlW1wiY2hhcmFjdGVyX3dpc2VfcHJlY2lzaW9uXCIsXCJUZXNzZXJhY3Rfd2l0aF9wb3N0cHJvY2Vzc2luZ1wiXSA8LSBsZW5ndGgobmV3X2ludGVyc2VjdF92ZWNfY2hhcikvbGVuZ3RoKHRlc3NlcmFjdF92ZWNfY2hhcilcbmthYmxlKE9DUl9wZXJmb3JtYW5jZV90YWJsZSwgY2FwdGlvbj1cIlN1bW1hcnkgb2YgT0NSIHBlcmZvcm1hbmNlXCIpXG5gYGAifQ== -->
 <pre class="r"><code>load(&quot;../output/FinalDataframe.RData&quot;)
 load(&quot;../output/ALLgroundtruth_vec.RData&quot;)
-
 # word level evaluation
 # old interaction
 old_intersect_vec &lt;- dat$error_token[dat$label == 1]
@@ -700,7 +695,6 @@ old_intersect_vec &lt;- dat$error_token[dat$label == 1]
 new_intersect_vec &lt;- vecsets::vintersect(tolower(dat$true_token[dat$label == 0]), 
                                          tolower(dat$corrected_token[dat$label == 0]))
 new_intersect_vec2 &lt;- c(old_intersect_vec, new_intersect_vec)
-
 OCR_performance_table &lt;- data.frame(&quot;Tesseract&quot; = rep(NA,4),
                                     &quot;Tesseract_with_postprocessing&quot; = rep(NA,4))
 row.names(OCR_performance_table) &lt;- c(&quot;word_wise_recall&quot;,&quot;word_wise_precision&quot;,
@@ -709,7 +703,6 @@ OCR_performance_table[&quot;word_wise_recall&quot;,&quot;Tesseract&quot;] &lt;- 
 OCR_performance_table[&quot;word_wise_precision&quot;,&quot;Tesseract&quot;] &lt;- length(old_intersect_vec)/length(dat$error_token)
 OCR_performance_table[&quot;word_wise_recall&quot;,&quot;Tesseract_with_postprocessing&quot;] &lt;- length(new_intersect_vec2)/length(ALLgroundtruth_vec)
 OCR_performance_table[&quot;word_wise_precision&quot;,&quot;Tesseract_with_postprocessing&quot;] &lt;- length(new_intersect_vec2)/length(dat$error_token)
-
 # character-level evaluation
 # old interaction
 ground_truth_vec_char &lt;- str_split(paste(ALLgroundtruth_vec, collapse = &quot;&quot;), &quot;&quot;)[[1]]
@@ -725,14 +718,50 @@ fun &lt;- function(row) {
 }
 correct_char = apply(as.matrix(df), 1, fun)
 new_intersect_vec_char &lt;- c(old_intersect_vec_char, unlist(correct_char))
-
 OCR_performance_table[&quot;character_wise_recall&quot;,&quot;Tesseract&quot;] &lt;- length(old_intersect_vec_char)/length(ground_truth_vec_char)
 OCR_performance_table[&quot;character_wise_precision&quot;,&quot;Tesseract&quot;] &lt;- length(old_intersect_vec_char)/length(tesseract_vec_char)
 OCR_performance_table[&quot;character_wise_recall&quot;,&quot;Tesseract_with_postprocessing&quot;] &lt;- length(new_intersect_vec_char)/length(ground_truth_vec_char)
 OCR_performance_table[&quot;character_wise_precision&quot;,&quot;Tesseract_with_postprocessing&quot;] &lt;- length(new_intersect_vec_char)/length(tesseract_vec_char)
-
 kable(OCR_performance_table, caption=&quot;Summary of OCR performance&quot;)</code></pre>
 <!-- rnb-source-end -->
+
+<!-- rnb-html-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImtuaXRfYXNpcyJdLCJzaXppbmdQb2xpY3kiOltdfX0= -->
+
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Tesseract</th>
+<th align="right">Tesseract_with_postprocessing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">word_wise_recall</td>
+<td align="right">0.5431029</td>
+<td align="right">0.6366007</td>
+</tr>
+<tr class="even">
+<td align="left">word_wise_precision</td>
+<td align="right">0.6183136</td>
+<td align="right">0.7247593</td>
+</tr>
+<tr class="odd">
+<td align="left">character_wise_recall</td>
+<td align="right">0.4586482</td>
+<td align="right">0.8261989</td>
+</tr>
+<tr class="even">
+<td align="left">character_wise_precision</td>
+<td align="right">0.5123853</td>
+<td align="right">0.9229998</td>
+</tr>
+</tbody>
+</table>
+
+
+<!-- rnb-html-end -->
+
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Besides the above required measurement, you are encouraged the explore more evaluation measurements. Here are some related references:</p>
