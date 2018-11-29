@@ -14,7 +14,7 @@ Term: Fall 2018
 	+ Lujia Wang
 	+ Jiaqian Yu
 
-+ **Project summary**: In this project, we created an OCR post-processing procedure to enhance Tesseract OCR output in two steps. We split the text files by group and for each group, as a first step, classify each word using Cross-validated Support Vector Machines as erroneous and correct. Secondly we perform error correction using probability scoring on the erroneous tokens. 
++ **Project summary**: In this project, we created an OCR post-processing procedure to enhance Tesseract OCR output in two steps. We split the text files by group and for each group, as a first step, classify each word using Cross-validated Support Vector Machines as erroneous and correct. After detecting the erroneous words, we perform error correction using probability scoring on them and finally evaluate our model performance using precision and recall. 
 	
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md))
 	+ Tao Han:
