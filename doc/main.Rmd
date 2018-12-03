@@ -423,13 +423,17 @@ FinalTrueToken <- FTrueToken[IndexWhole]
 ```
 
 
+* ###Calculate the score
 
 
 ```{r}
 ##### intput an error token, output a corrected token
 source("../lib/Chars.R")
 source("../lib/FinalFunction.R")
+```
 
+* ###Give a list for all the error tokens
+```{r}
 #hh <- rep(NA,length(FinalErrorToken))
 
 
@@ -454,7 +458,7 @@ acc
 
 
 
-* ###Deal with Index
+* ###Deal with Index and give the final result: a dataframe for all the predicted error tokens
 ```{r}
 dat$SVM_label <- detected_tokens$SVM_Label
 dat$ind <- 1:nrow(dat)
