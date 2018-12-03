@@ -2,12 +2,6 @@
 ##input: a word to correct
 ## output: all the proposed correct candidates
 
-# source("InsertedCandidate.R")
-# source("DeletionDatabase.R")
-# source("SubstitionDatabase.R")
-# source("SearchINDatabase.R")
-
-
 AllCorrectionCandidates <- function(word)
 {
   InsCan <- InsertedCandidate(word)
