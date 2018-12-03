@@ -314,17 +314,19 @@ FTrueToken <- CorrespondLowTrueToken[Index2]
 ###Use errors which only have one typo in the letters
 
 # source("../lib/onlyCorrectionForCM.R")
-# Index3 <- rep(NA,length(FErrorToken))
+# IndexWhole <- rep(NA,length(FErrorToken))
 # 
 # 
 # for (i in 1:length(FErrorToken)){
-#   Index3[i] <- is.element(FTrueToken[i],AllCorrectionCandidates1(FErrorToken[i]))
+#   IndexWhole[i] <- is.element(FTrueToken[i],AllCorrectionCandidates1(FErrorToken[i]))
 #   if (i %% 100 == 0) {cat(i, "words finished\n")}
 # }
 
 
-#save(Index3, file = "../output/IndexWhole.RData")
-IndexWhole <- load("../output/IndexWhole.RData")
+#save(IndexWhole, file = "../output/IndexWhole.RData")
+
+load("../output/IndexWhole.RData")
+
 
 FinalErrorToken <- FErrorToken[IndexWhole]
 FinalTrueToken <- FTrueToken[IndexWhole]
@@ -424,7 +426,7 @@ FinalTrueToken <- FTrueToken[IndexWhole]
 
 
 ```{r}
-##### given a word
+##### intput an error token, output a corrected token
 source("../lib/Chars.R")
 source("../lib/FinalFunction.R")
 
@@ -437,8 +439,10 @@ source("../lib/FinalFunction.R")
   
   
 #}
+#save(hh, file = "../output/CorrectionList.RData")
 
 load("../output/CorrectionList.RData")
+### Result for correction
 FinalTryToken <- hh
 
 #### accuracy just based on these data
@@ -447,6 +451,7 @@ acc <- sum(FinalTryToken==FinalTrueToken)/length(FinalTrueToken)
 acc
 
 ```
+
 
 
 * ###Deal with Index
@@ -469,6 +474,7 @@ dat$corrected_token <- as.character(dat$corrected_token)
 
 dat$corrected_token[InFinal] <- FinalTryToken[InF]
 
+#### A dataframe contains all the results we have
 save(dat, file = "../output/FinalDataframe.RData")
 ```
 
