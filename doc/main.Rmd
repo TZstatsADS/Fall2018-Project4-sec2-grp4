@@ -232,7 +232,7 @@ load("../output/detected_tokens.RData")
   
 #### function to see if a char only have letters(SS in Clean.R)
   
-## Only choose words
+## choose words that only have letters
 TrueToken <- as.character(dat$true_token)
   
 CleanTrueToken <- TrueToken[sapply(TrueToken,SS)]
@@ -423,16 +423,17 @@ FinalTrueToken <- FTrueToken[IndexWhole]
 ```
 
 
-* ###Calculate the score
+* ###Calculate the score for each candidates and give the corrected candidate with the highest score
 
 
 ```{r}
-##### intput an error token, output a corrected token
+##### Calculates Char[..]
 source("../lib/Chars.R")
+##### intput an error token, output a corrected candidate with the highest score
 source("../lib/FinalFunction.R")
 ```
 
-* ###Give a list for all the error tokens
+* ###Give a corrrected token list for all the error tokens
 ```{r}
 #hh <- rep(NA,length(FinalErrorToken))
 
