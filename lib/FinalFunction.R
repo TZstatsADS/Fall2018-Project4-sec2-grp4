@@ -1,8 +1,4 @@
 
-
-
-
-source("../lib/Chars.R")
 Prob <- function(word){
   
   CC <- AllCorrectionCandidates(word)
